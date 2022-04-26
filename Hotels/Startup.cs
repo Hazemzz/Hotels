@@ -31,6 +31,7 @@ namespace Hotels.Api
             {
                 c.SwaggerDoc("v1",
                     new Microsoft.OpenApi.Models.OpenApiInfo { Title = "Hotels API", Version = "v1" });
+                c.UseInlineDefinitionsForEnums(); 
             });
             {
                 services.AddDbContext<AppDbContext>(options =>
@@ -64,6 +65,7 @@ namespace Hotels.Api
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Hotels API V1");
+
             });
             
             app.UseHttpsRedirection();
