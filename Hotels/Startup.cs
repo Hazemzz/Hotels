@@ -4,6 +4,8 @@ using Hotels.Business.Repository.Interface;
 using Hotels.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -35,8 +37,16 @@ namespace Hotels.Api
                     options.UseSqlServer(
                         Configuration.GetConnectionString("DefaultConnection")));
             }
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+            services.AddApiVersioning(options =>
+            {
+                options.DefaultApiVersion = new ApiVersion(1, 0);
+                options.AssumeDefaultVersionWhenUnspecified = true;
+                options.ReportApiVersions = true;
+                options.ApiVersionReader = new MediaTypeApiVersionReader("v");
+            });
+            
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddScoped<IHotelReservationRepository, HotelReservationRepository>();
         }
@@ -49,6 +59,13 @@ namespace Hotels.Api
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Hotels API V1");
+            });
+            
             app.UseHttpsRedirection();
 
             app.UseRouting();

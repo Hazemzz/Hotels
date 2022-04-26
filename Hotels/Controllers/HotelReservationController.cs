@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Hotels.Api.Controllers
 {
-    [Route("get")]
+    [Route("api/[controller]")]
     [ApiController]
     public class HotelReservationController : ControllerBase
     {
@@ -17,8 +17,7 @@ namespace Hotels.Api.Controllers
         }
 
         // GET: api/HotelReservation
-        [HttpGet]
-        [Route("GetAll")]
+        [HttpGet("GetAll")]
         public async Task<IEnumerable> Get()
         {
             var result = await _hotelReservationRepository.GetAll();

@@ -13,5 +13,6 @@ namespace Hotels.Data.Models
         public DateTime CheckOuDate { get; set; }
         public string PaymentStatus { get; set; }
         public DateTime ReservationDate { get; set; }
+        public HotelReservationRooms HotelReservationRooms { get; set; }
     }
 }

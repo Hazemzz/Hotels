@@ -8,8 +8,14 @@ namespace Hotels.Business.Configuration
     {
         public MapperProfiler()
         {
-            CreateMap<HotelReservation, HotelReservationViewModel>();
+            CreateMap<HotelReservation, HotelReservationViewModel>()
+                .ForMember(dest => dest.Code, opt => opt
+                    .MapFrom(src => src.HotelReservationRooms.Code))
+                .ForMember(dest => dest.Price, opt => opt
+                    .MapFrom(src => src.HotelReservationRooms.Price));
+            CreateMap<HotelReservationViewModel, HotelReservation>();
             CreateMap<HotelReservationRooms, HotelReservationViewModel>();
+            CreateMap<HotelReservationViewModel, HotelReservationRooms>();
         }
     }
 }
