@@ -1,10 +1,12 @@
 ﻿using Hotels.Business.Repository.Interface;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Hotels.Data;
+using Hotels.Shared.Helper;
 using Hotels.Shared.ViewModels;
 using Microsoft.EntityFrameworkCore;
 
@@ -28,6 +30,22 @@ namespace Hotels.Business.Repository.Class
         {
             var hotelReservations = await _appDbContext.HotelReservation
                 .ProjectTo<HotelReservationViewModel>(_mapperProfiler.ConfigurationProvider).ToListAsync();
+            return _mapperProfiler.Map<IEnumerable<HotelReservationViewModel>>(hotelReservations);
+        }
+
+        public async Task<IEnumerable<HotelReservationViewModel>> FilterHotelReservations(Filtering filtering)
+        {
+            var hotelReservations = await _appDbContext.HotelReservation
+                .ProjectTo<HotelReservationViewModel>(_mapperProfiler.ConfigurationProvider).ToListAsync();
+
+            hotelReservations = hotelReservations
+                .Where(x => x.CheckInDate >= filtering.CheckInDateFrom && x.CheckInDate <= filtering.CheckInDateTo && 
+                            x.ReservationDate >= filtering.ReservationDateFrom && x.ReservationDate <= filtering.ReservationInDateTo && 
+                            x.BookingReferenceNumber.Contains(filtering.BookingReferenceNumber) && 
+                            x.Price >= filtering.PriceFrom && x.Price <= filtering.PriceTo)
+                //.Where(x=>x.PaymentStatus.Contains(filtering.PaymentStatus.ToString()))
+                .ToList();
+
             return _mapperProfiler.Map<IEnumerable<HotelReservationViewModel>>(hotelReservations);
         }
     }

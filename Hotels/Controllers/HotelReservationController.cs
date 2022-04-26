@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Threading.Tasks;
 using Hotels.Business.Repository.Interface;
+using Hotels.Shared.Helper;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Hotels.Api.Controllers
@@ -17,11 +18,10 @@ namespace Hotels.Api.Controllers
         }
 
         // GET: api/HotelReservation
-        [HttpGet("GetAll")]
-        public async Task<IEnumerable> Get()
+        [HttpPost("GetData")]
+        public async Task<IEnumerable> Get([FromBody] Filtering filter)
         {
-            var result = await _hotelReservationRepository.GetAll();
-            return result;
+            return await _hotelReservationRepository.FilterHotelReservations(filter);
         }
     }
 }
