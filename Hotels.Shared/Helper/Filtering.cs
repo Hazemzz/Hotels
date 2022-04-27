@@ -7,7 +7,7 @@ namespace Hotels.Shared.Helper
     {
         public DateTime? CheckInDateFrom{ get; set; }
         public DateTime? CheckInDateTo { get; set; }
-        public string? BookingReferenceNumber { get; set; }
+        public string BookingReferenceNumber { get; set; }
         public DateTime? ReservationDateFrom { get; set; }
         public DateTime? ReservationInDateTo { get; set; }
         [DefaultValue(PaymentStatus.Paid)]

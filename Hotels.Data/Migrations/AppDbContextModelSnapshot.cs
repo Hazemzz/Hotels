@@ -23,6 +23,7 @@ namespace Hotels.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnName("pk_HotelReservation")
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -41,14 +42,14 @@ namespace Hotels.Data.Migrations
                     b.Property<double>("PaidAmount")
                         .HasColumnType("float");
 
-                    b.Property<string>("PaymentStatus")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("PaymentStatus")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("ReservationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -79,17 +80,16 @@ namespace Hotels.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("HotelReservationId")
-                        .IsUnique();
+                    b.HasIndex("HotelReservationId");
 
                     b.ToTable("HotelReservationRooms");
                 });
 
             modelBuilder.Entity("Hotels.Data.Models.HotelReservationRooms", b =>
                 {
-                    b.HasOne("Hotels.Data.Models.HotelReservation", null)
-                        .WithOne("HotelReservationRooms")
-                        .HasForeignKey("Hotels.Data.Models.HotelReservationRooms", "HotelReservationId")
+                    b.HasOne("Hotels.Data.Models.HotelReservation", "HotelReservation")
+                        .WithMany("HotelReservationRooms")
+                        .HasForeignKey("HotelReservationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

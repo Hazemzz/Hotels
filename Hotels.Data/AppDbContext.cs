@@ -11,5 +11,19 @@ namespace Hotels.Data
 
         public DbSet<HotelReservation> HotelReservation { get; set; }
         public DbSet<HotelReservationRooms> HotelReservationRooms { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<HotelReservation>().Property(j => j.Id).HasColumnName("pk_HotelReservation");
+
+            modelBuilder.Entity<HotelReservationRooms>(entity =>
+            {
+                entity.HasOne(d => d.HotelReservation)
+                    .WithMany(p => p.HotelReservationRooms)
+                    .HasForeignKey(d => d.HotelReservationId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
+        }
     }
+
 }

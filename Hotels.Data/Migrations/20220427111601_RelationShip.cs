@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Hotels.Data.Migrations
 {
-    public partial class intiat : Migration
+    public partial class RelationShip : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -42,16 +42,27 @@ namespace Hotels.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_HotelReservationRooms", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_HotelReservationRooms_HotelReservation_HotelReservationId",
+                        column: x => x.HotelReservationId,
+                        principalTable: "HotelReservation",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_HotelReservationRooms_HotelReservationId",
+                table: "HotelReservationRooms",
+                column: "HotelReservationId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "HotelReservation");
+                name: "HotelReservationRooms");
 
             migrationBuilder.DropTable(
-                name: "HotelReservationRooms");
+                name: "HotelReservation");
         }
     }
 }

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hotels.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220424105245_intiat")]
-    partial class intiat
+    [Migration("20220427111601_RelationShip")]
+    partial class RelationShip
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -81,7 +81,18 @@ namespace Hotels.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("HotelReservationId");
+
                     b.ToTable("HotelReservationRooms");
+                });
+
+            modelBuilder.Entity("Hotels.Data.Models.HotelReservationRooms", b =>
+                {
+                    b.HasOne("Hotels.Data.Models.HotelReservation", "HotelReservation")
+                        .WithMany("HotelReservationRooms")
+                        .HasForeignKey("HotelReservationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
