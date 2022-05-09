@@ -12,12 +12,12 @@ namespace Hotels.Shared
     public enum PaymentStatus
     {
         [Display(Name = "Pending")]
-        Pending,
+        Pending = 1,
         [Display(Name = "Paid")]
-        Paid ,
+        Paid = 2,
         [Display(Name = "Cancelled")]
-        Cancelled,
+        Cancelled = 3,
         [Display(Name = "Failed")]
-        Failed
+        Failed = 4
     }
 }

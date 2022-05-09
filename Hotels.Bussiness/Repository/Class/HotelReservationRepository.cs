@@ -45,7 +45,7 @@ namespace Hotels.Business.Repository.Class
                             x.Price >= filtering.PriceFrom && x.Price <= filtering.PriceTo ||
                             x.PaymentStatus == filtering.PaymentStatus);
 
-            return await hotelReservations.ToListAsync();
+            return await hotelReservations.DefaultIfEmpty().ToListAsync();
         }
     }
 }
