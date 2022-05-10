@@ -37,15 +37,36 @@ namespace Hotels.Business.Repository.Class
         {
             var hotelReservations =  _appDbContext.HotelReservation
                 .ProjectTo<HotelReservationViewModel>(_mapperProfiler.ConfigurationProvider);
+            
+            if (filtering.CheckInDateFrom != null)
+            {
+                hotelReservations = hotelReservations
+                    .Where(x => x.CheckInDate >= filtering.CheckInDateFrom && x.CheckInDate <= filtering.CheckInDateTo);
+            }
+            if (!string.IsNullOrEmpty(filtering.BookingReferenceNumber))
+            {
 
-            hotelReservations = hotelReservations
-                .Where(x => x.CheckInDate >= filtering.CheckInDateFrom && x.CheckInDate <= filtering.CheckInDateTo || 
-                            x.ReservationDate >= filtering.ReservationDateFrom && x.ReservationDate <= filtering.ReservationInDateTo || 
-                            x.BookingReferenceNumber.Contains(filtering.BookingReferenceNumber) ||
-                            x.Price >= filtering.PriceFrom && x.Price <= filtering.PriceTo ||
-                            x.PaymentStatus == filtering.PaymentStatus);
+                hotelReservations = hotelReservations
+                    .Where(x => x.BookingReferenceNumber.Contains(filtering.BookingReferenceNumber));
+            }
+            if(filtering.ReservationDateFrom != null)
+            {
+                hotelReservations = hotelReservations
+                    .Where(x => x.ReservationDate >= filtering.ReservationDateFrom && x.ReservationDate <= filtering.ReservationInDateTo );
+            }
+            if(filtering.PriceFrom != null)
+            {
+                hotelReservations = hotelReservations
+                    .Where(x => x.Price >= filtering.PriceFrom && x.Price <= filtering.PriceTo);
+            }
+            if (filtering.PaymentStatus != 0)
+            {
+                hotelReservations = hotelReservations
+                    .Where(x => x.PaymentStatus == filtering.PaymentStatus);
+            }
 
-            return await hotelReservations.DefaultIfEmpty().ToListAsync();
-        }
+
+            return await hotelReservations.ToListAsync();
+         }
     }
 }
